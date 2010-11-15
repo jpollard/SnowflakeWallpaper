@@ -16,6 +16,7 @@ public class CanvasTut extends Activity {
     public void onPause(){
     	super.onPause();
     	//onSaveInstanceState(bundle);
+    	//this.setActive(false);
     }
     
   //  public void onResume(bundle){

@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
  * int y:				set the initial y postion
  * int speed:			set the speed of the change in (x,y) postion
  * 
+ * void delta(): 		change x & y
+ * 
  */
 public class Snowflakes {
 	private Bitmap snowflake;

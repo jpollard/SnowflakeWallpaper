@@ -22,7 +22,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback{
 		super(context, attrs);
 		
 		getHolder().addCallback(this);  //getHolder returns SurfaceHolder that provides control and access to SurfaceView
-		canvasThrd = new CanvasThread(getHolder(), this);
+		canvasThrd = new CanvasThread(getHolder(), this, snowflakes);
 		setFocusable(true);		
 	}
 	
@@ -90,7 +90,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback{
 		canvas.drawColor(Color.BLACK);
 		
 		for(int i = 0; i < snowflakes.size(); i++){
-			snowflakes.get(i).delta();
+			
 			canvas.drawBitmap(snowflakes.get(i).getImage(), snowflakes.get(i).getX(), snowflakes.get(i).getY(), null);
 		}
 		
