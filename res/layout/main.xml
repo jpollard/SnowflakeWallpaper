@@ -3,10 +3,10 @@
 	android:orientation="vertical"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent">
-	<com.effupayme.canvastut.Panel 
+	<com.effupayme.snowflakewall.Panel 
 		android:id="@+id/SurfaceView01" 
 		android:layout_width="wrap_content" 
 		android:layout_height="wrap_content" 
 		android:maxHeight="40dip">
-	</com.effupayme.canvastut.Panel>
+	</com.effupayme.snowflakewall.Panel>
 </LinearLayout>
