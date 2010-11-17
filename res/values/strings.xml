@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">Hello World, CanvasTut!</string>
-    <string name="app_name">CanvasTut</string>
+    <string name="app_name">Snowflake Wallpaper</string>
+    <string name="snowflake_desc">Falling snowflakes</string>
 </resources>

@@ -1,11 +1,11 @@
 package com.effupayme.snowflakewall;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.app.Service;
 
-public class SnowflakeWallpaper extends Activity {
+public class SnowflakeWallpaper extends Service {
 	private Bundle bundle;
 	private Panel panel;
 	
@@ -13,7 +13,9 @@ public class SnowflakeWallpaper extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        panel = new Panel(this);
+        setContentView(panel);
+        
     }
     
     @Override
@@ -27,7 +29,7 @@ public class SnowflakeWallpaper extends Activity {
     	@Override
     	public void run(){
     		while(true){
-    			//SnowflakeWallpaper.this.panelHandler.sendEmptyMessage(0);
+    			SnowflakeWallpaper.this.panelHandler.sendEmptyMessage(0);
     		}
     	}
     }

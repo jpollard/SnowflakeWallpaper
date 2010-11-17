@@ -8,23 +8,22 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.util.AttributeSet;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.view.View;
 
-public class Panel extends SurfaceView implements SurfaceHolder.Callback{
+public class Panel extends View{
 	private static int NUM_OF_FLAKES = 4;
 	//CanvasThread canvasThrd;
 	ArrayList<Snowflakes> snowflakes;
 	private boolean active;
 	
-	public Panel(Context context, AttributeSet attrs){
-		super(context, attrs);
+	public Panel(Context context){
+	//public Panel(Context context, AttributeSet attrs){
+		super(context);
 		active = true;
-		getHolder().addCallback(this);  //getHolder returns SurfaceHolder that provides control and access to SurfaceView
+		//getHolder().addCallback(this);  //getHolder returns SurfaceHolder that provides control and access to SurfaceView
 		//canvasThrd = new CanvasThread(getHolder(), this, snowflakes);
-		setFocusable(true);		
+		//setFocusable(true);		
 	}
 	
 	@Override	
@@ -32,7 +31,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback{
 		// Auto generated with SurfaceHolder
 	}
 	
-	@Override
+	/*@Override
 	public void surfaceDestroyed(SurfaceHolder holder){
 		// Auto generated with SurfaceHolder
 		Boolean retry = true;
@@ -43,7 +42,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback{
 				retry = false;
 			} catch(Exception e) { }
 		}
-	}
+	}*/
 	
 	@Override
 	public void surfaceCreated(SurfaceHolder holder){
