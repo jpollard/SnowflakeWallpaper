@@ -3,26 +3,26 @@ package com.effupayme.snowflakewall;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.app.Service;
+import android.service.wallpaper.WallpaperService;
 
-public class SnowflakeWallpaper extends Service {
+public class SnowflakeWallpaper extends WallpaperService {
 	private Bundle bundle;
 	private Panel panel;
 	
+	/** onCreateEngine autocreated from extending WallpaperService */
+	@Override
+	public Engine onCreateEngine(){
+		return new snowEngine();
+	}
+	
+	public class snowEngine extends Engine{
+		
+	}
     /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        panel = new Panel(this);
-        setContentView(panel);
-        
-    }
-    
-    @Override
-    public void onPause(){
-    	super.onPause();
-    }
-    
+    public void onCreate() {
+    	
+    }    
     
     public class panelThread implements Runnable{
     	
