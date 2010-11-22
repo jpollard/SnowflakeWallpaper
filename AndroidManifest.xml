@@ -12,7 +12,7 @@
             	<action android:name="android.service.wallpaper.WallpaperService" />
          	</intent-filter>
          	<meta-data android:name="android.service.wallpaper" 
-         			   android:resource="@xml/snowflakes" />
+         			   android:resource="@xml/snowflake" />
 		</service>
 	</application>
     <uses-sdk android:minSdkVersion="7" />
