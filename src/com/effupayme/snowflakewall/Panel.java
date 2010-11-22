@@ -46,7 +46,7 @@ public class Panel extends View{
 	
 	@Override
 	public void surfaceCreated(SurfaceHolder holder){
-		
+		super.surfaceCreated(holder);
 		// Auto generated with SurfaceHolder
 		snowflakes = new ArrayList<Snowflakes>();
 		
