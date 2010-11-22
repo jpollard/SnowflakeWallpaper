@@ -1,7 +1,7 @@
 package com.effupayme.snowflakewall;
 
 import java.util.ArrayList;
-import android.R;
+import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -18,6 +18,7 @@ public class SnowflakeWallpaper extends WallpaperService {
 	static int SNOWFLAKE_AMOUNT = 4;
 
     private final Handler mHandler = new Handler();
+    
 
     @Override
     public void onCreate() {
@@ -35,7 +36,8 @@ public class SnowflakeWallpaper extends WallpaperService {
     }
 
     class SnowEngine extends Engine {
-
+    	Resources res = getResources();
+    	
         private final Paint mPaint = new Paint();
         private float mOffset;
         private long mStartTime;
@@ -55,8 +57,8 @@ public class SnowflakeWallpaper extends WallpaperService {
             // Create the back snowflakes
             for(int i = 0; i < SNOWFLAKE_AMOUNT; i++){
             	snow.add(new Snowflakes(
-    					BitmapFactory.decodeResource(getResources(), 
-    					R.drawable.snowflakeback),
+            			BitmapFactory.decodeResource(getResources(),
+            			R.drawable.snowflakeback),
     					(int)(Math.random() * getSurfaceHolder().getSurfaceFrame().width() +1),
     					(int)(Math.random() * getSurfaceHolder().getSurfaceFrame().height() + 1),
     					(int)(Math.random() * 5) + 1)
