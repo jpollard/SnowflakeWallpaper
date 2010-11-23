@@ -1,13 +1,11 @@
 package com.effupayme.snowflakewall;
 
 import java.util.ArrayList;
-import android.content.res.Resources;
+
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
 
@@ -17,6 +15,7 @@ import android.view.SurfaceHolder;
 
 public class SnowflakeWallpaper extends WallpaperService {
 	static int SNOWFLAKE_AMOUNT = 4;
+	static int SNOW_START = -90;
 	ArrayList<Snowflakes> snow = new ArrayList<Snowflakes>();
     private final Handler mHandler = new Handler();
     
@@ -38,7 +37,6 @@ public class SnowflakeWallpaper extends WallpaperService {
     }
 
     class SnowEngine extends Engine {
-        private long mStartTime;
 
         private final Runnable mDrawSnow = new Runnable() {
             public void run() {
@@ -56,9 +54,9 @@ public class SnowflakeWallpaper extends WallpaperService {
     			snow.add(new Snowflakes(
     					BitmapFactory.decodeResource(getResources(), 
     					R.drawable.snowflakeback),
-    					-64,
-    					-64,
-    					((float)(Math.random() * 5) + 1) / snow.size())
+    					SNOW_START,
+    					SNOW_START,
+    					((float)(Math.random() * 2) + 1))
     			);
     		}
     		
@@ -67,10 +65,10 @@ public class SnowflakeWallpaper extends WallpaperService {
     			snow.add(new Snowflakes(
     					BitmapFactory.decodeResource(getResources(),
     					R.drawable.snowflakemid),
-    					-64,
-    					-64,
-    					((float)(Math.random() * 5) + 1) / snow.size())
-    			);
+    					SNOW_START,
+    					SNOW_START,
+    					((float)(Math.random() * 4) + 1)
+    			));
     		}
     		
     		// Mid snowflakes
@@ -78,9 +76,9 @@ public class SnowflakeWallpaper extends WallpaperService {
     			snow.add(new Snowflakes(
     					BitmapFactory.decodeResource(getResources(),
     					R.drawable.snowflakemidfront),
-    					-64,
-    					-64,
-    					((float)(Math.random() * 5) + 1) / snow.size())
+    					SNOW_START,
+    					SNOW_START,
+    					((float)(Math.random() * 6) + 1))
     			);
     		}
     		// Front snowflakes
@@ -88,13 +86,16 @@ public class SnowflakeWallpaper extends WallpaperService {
     			snow.add(new Snowflakes(
     					BitmapFactory.decodeResource(getResources(), 
     					R.drawable.snowflake),
-    					-64, 
-    					-64, 
-    					((float)(Math.random() * 5) + 1) / snow.size())
+    					SNOW_START, 
+    					SNOW_START, 
+    					((float)(Math.random() * 10) + 1))
     			);
     		}
+    		for(int i = 0; i < snow.size(); i++){
+    			snow.get(i).setSpeed(snow.get(i).getSpeed()/(snow.size() - i));
+    		}
         	}
-            mStartTime = SystemClock.elapsedRealtime();
+            //mStartTime = SystemClock.elapsedRealtime();
         }
 
         @Override
@@ -127,8 +128,6 @@ public class SnowflakeWallpaper extends WallpaperService {
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
             super.onSurfaceCreated(holder);
-         
-            
         }
 
         @Override
@@ -139,9 +138,7 @@ public class SnowflakeWallpaper extends WallpaperService {
         }
 
         /*
-         * Draw one frame of the animation. This method gets called repeatedly
-         * by posting a delayed Runnable. You can do any drawing you want in
-         * here. This example draws a wireframe cube.
+         * Update the screen with a new frame
          */
         void drawFrame() {
             final SurfaceHolder holder = getSurfaceHolder();
@@ -163,7 +160,7 @@ public class SnowflakeWallpaper extends WallpaperService {
             // Reschedule the next redraw
             mHandler.removeCallbacks(mDrawSnow);
             if (mVisible) {
-                mHandler.postDelayed(mDrawSnow, 1000 / 25);
+                mHandler.postDelayed(mDrawSnow, 1000 / 75);
             }
         }
 
@@ -172,7 +169,7 @@ public class SnowflakeWallpaper extends WallpaperService {
          */
         void drawSnow(Canvas c) {
             c.save();
-            if(snow.get(1).getX() < -48){
+            if(snow.get(1).getX() < -70){
             	for(int i = 0; i < snow.size(); i++){
             		snow.get(i).setX((int)(Math.random() * getSurfaceHolder().getSurfaceFrame().width() +1));
             		snow.get(i).setY((int)(Math.random() * getSurfaceHolder().getSurfaceFrame().height() + 1));
@@ -183,10 +180,10 @@ public class SnowflakeWallpaper extends WallpaperService {
              */
             for(int i = 0; i < snow.size(); i++){
             	if(snow.get(i).getX() > c.getWidth()){
-            		snow.get(i).setX(-48);
+            		snow.get(i).setX(-65);
             	}
             	if(snow.get(i).getY() > c.getHeight()){
-            		snow.get(i).setY(-48);
+            		snow.get(i).setY(-69);
             	}
             }
             

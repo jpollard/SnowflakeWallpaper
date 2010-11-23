@@ -33,6 +33,14 @@ public class Snowflakes {
 	public void setX(float _x){
 		x = _x;
 	}
+	
+	public void setSpeed(float _speed){
+		speed = _speed;
+	}
+	
+	public float getSpeed(){
+		return speed;
+	}
 
 	public float getY(){
 		return y;
