@@ -6,39 +6,39 @@ import android.graphics.Bitmap;
  * 
  * @author jwp
  * Bitmap snowflake:	pass in the bitmap to be controlled
- * int x:				set the initial x postion
- * int y:				set the initial y postion
- * int speed:			set the speed of the change in (x,y) postion
+ * float x:				set the initial x postion
+ * float y:				set the initial y postion
+ * float speed:			set the speed of the change in (x,y) postion
  * 
  * void delta(): 		change x & y
  * 
  */
 public class Snowflakes {
 	private Bitmap snowflake;
-	private int x;
-	private int y;
-	private int speed;
+	private float x;
+	private float y;
+	private float speed;
 	
-	public Snowflakes(Bitmap _snowflake, int _x, int _y, int _speed){
+	public Snowflakes(Bitmap _snowflake, float _x, float _y, float _speed){
 		snowflake = _snowflake;
 		x = _x;
 		y = _y;
 		speed = _speed;
 	}
 	
-	public void setY(int _y){
+	public void setY(float _y){
 		y = _y ;
 	}
 	
-	public void setX(int _x){
+	public void setX(float _x){
 		x = _x;
 	}
 
-	public int getY(){
+	public float getY(){
 		return y;
 	}
 	
-	public int getX(){
+	public float getX(){
 		return x;
 	}
 	
