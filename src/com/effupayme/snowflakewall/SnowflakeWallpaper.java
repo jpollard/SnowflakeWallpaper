@@ -2,9 +2,12 @@ package com.effupayme.snowflakewall;
 
 import java.util.ArrayList;
 
+import android.app.WallpaperManager;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
 import android.view.SurfaceHolder;
@@ -17,6 +20,8 @@ public class SnowflakeWallpaper extends WallpaperService {
 	// Limit of snowflakes per snowflake type; 4 types * 4 snowflake = 16 total
 	// Should keep memory usage at a minimal
 	static int SNOWFLAKE_AMOUNT = 4;
+	Drawable drawWall;
+	Rect wallBounds;
 	
 	// Draw all snowflakes off screen due to not knowing size of canvas at creation
 	static int SNOW_START = -90;
@@ -28,7 +33,10 @@ public class SnowflakeWallpaper extends WallpaperService {
     @Override
     public void onCreate() {
         super.onCreate();
-      
+    	//WallpaperManager to pull current wallpaper
+    	WallpaperManager wManager = WallpaperManager.getInstance(this);
+    	drawWall = wManager.getFastDrawable();
+    	wallBounds = drawWall.copyBounds();
     }
 
     @Override
@@ -51,7 +59,9 @@ public class SnowflakeWallpaper extends WallpaperService {
         
         private boolean mVisible;
 
-        SnowEngine() {        	
+        SnowEngine() {  
+        	
+          if(snow.size() < 16){
         	//Back snowflakes
     		for(int i = 0; i < SNOWFLAKE_AMOUNT; i++){
     			snow.add(new Snowflakes(
@@ -59,7 +69,7 @@ public class SnowflakeWallpaper extends WallpaperService {
     					R.drawable.snowflakeback),
     					SNOW_START,
     					SNOW_START,
-    					((float)(Math.random() * 2) + 1))
+    					((float)(Math.random() * 2) + 1)) // Fall speed initial setup, back slowest to front fastest potentially 
     			);
     		}
     		
@@ -81,7 +91,7 @@ public class SnowflakeWallpaper extends WallpaperService {
     					R.drawable.snowflakemidfront),
     					SNOW_START,
     					SNOW_START,
-    					((float)(Math.random() * 6) + 1))
+    					((float)(Math.random() * 8) + 1))
     			);
     		}
     		// Front snowflakes
@@ -91,14 +101,16 @@ public class SnowflakeWallpaper extends WallpaperService {
     					R.drawable.snowflake),
     					SNOW_START, 
     					SNOW_START, 
-    					((float)(Math.random() * 10) + 1))
+    					((float)(Math.random() * 16) + 1))
     			);
-    			// Set speed to (current speed) / (array size - current spot in array)
-    			// This makes sure that the flakes in the back move slower
-    			for(int j = 0; j < snow.size(); j++){
-    				snow.get(j).setSpeed(snow.get(j).getSpeed()/(snow.size() - j));
-    			}
-        	}
+    		}	
+    		/*// Set speed to (current speed) / (array size - current spot in array)
+    		// This makes sure that the flakes in the back move slower and that everything
+    		// doesnt fall at the same speed.
+    		for(int j = 0; j < snow.size(); j++){
+    			snow.get(j).setSpeed((snow.get(j).getSpeed() + j)/(snow.size() - j));
+    		}*/
+          }
         }
 
         @Override
@@ -146,6 +158,27 @@ public class SnowflakeWallpaper extends WallpaperService {
         void drawFrame() {
             final SurfaceHolder holder = getSurfaceHolder();
             
+            /*
+             * if the snow goes too low or too right, reset;
+             */
+            for(int i = 0; i < snow.size(); i++){
+            	if(snow.get(i).getX() > holder.getSurfaceFrame().width()){
+            		snow.get(i).setX(-65);
+            	}
+            	if(snow.get(i).getY() > holder.getSurfaceFrame().height()){
+            		snow.get(i).setY(-69);
+            	}
+            }
+            
+            // Test if the array was just create; true - randomly populate snowflakes on screen
+            if(snow.get(1).getX() < -70){
+            	for(int i = 0; i < snow.size(); i++){
+            		snow.get(i).setX((int)(Math.random() * getSurfaceHolder().getSurfaceFrame().width() +1));
+            		snow.get(i).setY((int)(Math.random() * getSurfaceHolder().getSurfaceFrame().height() + 1));
+            	}
+            }
+            
+            
             // Change snowflake x & y
             for(int i = 0; i < snow.size(); i++){
             	snow.get(i).delta();
@@ -166,7 +199,7 @@ public class SnowflakeWallpaper extends WallpaperService {
             // Reschedule the next redraw
             mHandler.removeCallbacks(mDrawSnow);
             if (mVisible) {
-                mHandler.postDelayed(mDrawSnow, 1000 / 75);
+                mHandler.postDelayed(mDrawSnow, 1000 / 100);
             }
         }
 
@@ -175,30 +208,15 @@ public class SnowflakeWallpaper extends WallpaperService {
          */
         void drawSnow(Canvas c) {
             c.save();
-            
-            // Test if the array was just create; true - randomly populate snowflakes on screen
-            if(snow.get(1).getX() < -70){
-            	for(int i = 0; i < snow.size(); i++){
-            		snow.get(i).setX((int)(Math.random() * getSurfaceHolder().getSurfaceFrame().width() +1));
-            		snow.get(i).setY((int)(Math.random() * getSurfaceHolder().getSurfaceFrame().height() + 1));
-            	}
-            }
-            
-            /*
-             * if the snow goes too low or too right, reset;
-             */
-            for(int i = 0; i < snow.size(); i++){
-            	if(snow.get(i).getX() > c.getWidth()){
-            		snow.get(i).setX(-65);
-            	}
-            	if(snow.get(i).getY() > c.getHeight()){
-            		snow.get(i).setY(-69);
-            	}
-            }
-            
+
             // Draw bg
             //********** add code to pull current bg and draw that instead of black. Maybe set this in config?
-            c.drawColor(Color.BLACK);
+            if(drawWall == null){
+            	c.drawColor(Color.BLACK);
+            }else{
+            	drawWall.copyBounds(wallBounds);
+            	drawWall.draw(c);
+            }
             
             /*
              * draw up the snow
